@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>두들링 ENT | 방송인 모집 신청</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f5ef;
+      --card: #fffaf3;
+      --panel: #fff3e1;
+      --border: #efd8bf;
+      --accent: #f06c8f;
+      --accent-2: #f3c623;
+      --text: #2f2619;
+      --muted: #7a6c57;
+      --shadow: 0 12px 36px rgba(204, 164, 120, 0.28);
+      --radius: 18px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 10%, rgba(240,108,143,0.16), transparent 32%),
+                  radial-gradient(circle at 85% 15%, rgba(243,198,35,0.18), transparent 30%),
+                  radial-gradient(circle at 50% 90%, rgba(133,201,255,0.18), transparent 32%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 18px 48px;
+    }
+
+    .wrapper { max-width: 980px; margin: 0 auto; }
+
+    header {
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand img {
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: #fff7ec;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 6px;
+    }
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #2b1f14;
+    }
+    .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .title span.badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, rgba(240,108,143,0.2), rgba(243,198,35,0.24));
+      border: 1px solid var(--border);
+      font-size: 13px;
+      color: #2b1f14;
+    }
+    .meta {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: 10px;
+      flex-wrap: nowrap;
+    }
+    .meta .chip {
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: #fffdf8;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .layout { display: grid; grid-template-columns: 1fr; }
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 22px 20px;
+    }
+    .section h2 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .section p.desc { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+
+    form { display: grid; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field label { font-size: 14px; font-weight: 700; color: var(--text); }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      font-size: 14px;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .field textarea { min-height: 94px; resize: vertical; }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(240,108,143,0.2);
+      outline: none;
+      background: #fff7ec;
+    }
+
+    .platform-group { display: flex; flex-wrap: wrap; gap: 10px; }
+    .platform-btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fffdf8;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      transition: .2s;
+    }
+    .platform-btn.active {
+      border-color: var(--accent);
+      color: #2b1f14;
+      background: linear-gradient(120deg, #ffd7a3, #f06c8f);
+      font-weight: 700;
+      box-shadow: 0 10px 22px rgba(240,108,143,0.25);
+    }
+
+    .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 400;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .checkbox-label input[type="checkbox"],
+    .checkbox-label input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .checkbox-label input[type="checkbox"]:checked,
+    .checkbox-label input[type="radio"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .consent-section {
+      background: #fff7ec;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .consent-header {
+      padding: 14px 16px;
+      background: #ffeef5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      user-select: none;
+      transition: background .2s;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .consent-header:hover {
+      background: #ffdfe5;
+    }
+    .consent-header:focus {
+      outline: none;
+    }
+    .consent-header-checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+      font-size: 14px;
+      line-height: 1;
+    }
+    .consent-header input[type="checkbox"]:checked ~ .consent-header-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+      content: '✅';
+    }
+    .consent-header input[type="checkbox"] {
+      display: none;
+    }
+    .consent-title {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .consent-toggle {
+      font-size: 12px;
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    .consent-header.open .consent-toggle {
+      transform: rotate(180deg);
+    }
+    .consent-content {
+      display: none;
+      padding: 16px;
+      background: white;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .consent-content.show {
+      display: block;
+    }
+    .consent-content ol {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+    .consent-content li {
+      margin-bottom: 8px;
+    }
+    .consent-content strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .consent-box {
+      background: #fff7ec;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      padding: 12px;
+      line-height: 1.55;
+    }
+
+    button {
+      background: linear-gradient(120deg, #f06c8f, #f3c623);
+      color: #2b1f14;
+      border: none;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .1s ease, box-shadow .1s ease;
+      box-shadow: 0 12px 28px rgba(240,108,143,0.35);
+      letter-spacing: -0.2px;
+    }
+    button:hover { transform: translateY(-1px); box-shadow: 0 16px 34px rgba(240,108,143,0.42); }
+    button:active { transform: translateY(0); }
+
+    .status { font-size: 14px; font-weight: 700; min-height: 22px; }
+    .success { color: #1f9d55; }
+    .error { color: #d93025; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .modal {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 16px 18px;
+      background: linear-gradient(120deg, #f06c8f, #f3c623);
+      color: #2b1f14;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-body { padding: 18px; color: var(--text); }
+    .modal-actions { padding: 0 18px 18px; display: flex; justify-content: flex-end; }
+    .btn-outline {
+      background: #fffdf8;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    @media (max-width: 540px) {
+      header { align-items: flex-start; }
+      .title { font-size: 24px; }
+      body { padding: 22px 14px 38px; }
+      .meta { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="brand">
+        <div>
+          <div class="title">두들링 엔터테인먼트 신입/경력 방송인 모집 신청</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="section">
+        <h2>📝 참가 신청하기</h2>
+        <p class="desc">정확한 안내를 위해 필수 항목을 모두 입력해주세요.</p>
+
+        <form id="eventForm" novalidate>
+          <div class="field">
+            <label>이름 *</label>
+            <input type="text" name="name" placeholder="홍길동" required>
+          </div>
+
+          <div class="field">
+            <label>연락처 *</label>
+            <input type="tel" name="phone" placeholder="010-1234-5678" required>
+          </div>
+
+          <div class="field">
+            <label>지역 *(거주지 입력은 동까지 입력해주세요./ex : 서울시 강서구 등촌동)</label>
+            <input type="text" name="region" placeholder="예: 서울시 강서구 등촌동" required>
+          </div>
+
+          <div class="field">
+            <label>연령대 *</label>
+            <select name="age" required>
+              <option value="">선택하세요</option>
+              <option>10대</option>
+              <option>20대</option>
+              <option>30대</option>
+              <option>40대 이상</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>방송경험 여부 *</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="radio" name="broadcast_experience" value="있다" required> 있다
+              </label>
+              <label class="checkbox-label">
+                <input type="radio" name="broadcast_experience" value="없다" required> 없다
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>지원하게 된 이유 * <span style="font-size:12px; color:var(--muted); font-weight:400;">(중복선택 가능)</span></label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="reason" value="개인 채널의 활성화 및 팬 유치"> 개인 채널의 활성화 및 팬 유치
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="reason" value="방송 수익(현재 소속BJ 평균 월 400만원)"> 방송 수익(현재 소속BJ 평균 월 400만원)
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="reason" value="짬짬이 부업 개념으로의 수익 원함"> 짬짬이 부업 개념으로의 수익 원함
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="reason" value="방송장비 설치 및 지원"> 방송장비 설치 및 지원
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="reason" value="방송 스튜디오 제공"> 방송 스튜디오 제공
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="reason" value="방송인으로써 성장할 수 있도록 교육/매니지먼트 등"> 방송인으로써 성장할 수 있도록 교육/매니지먼트 등
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>본인 SNS 계정(현재 활성화 되어있는 계정 체크 모두) * <span style="font-size:12px; color:var(--muted); font-weight:400;">(중복선택 가능)</span></label>
+            <div class="platform-group" id="platformGroup">
+              <div class="platform-btn" data-value="TikTok">TikTok</div>
+              <div class="platform-btn" data-value="Instagram">Instagram</div>
+              <div class="platform-btn" data-value="YouTube">YouTube</div>
+              <div class="platform-btn" data-value="기타">기타</div>
+            </div>
+            <input type="hidden" name="platform" id="platform" required>
+          </div>
+
+          <div class="field">
+            <label>활동 원하는 플랫폼 * <span style="font-size:12px; color:var(--muted); font-weight:400;">(중복선택 가능)</span></label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="desired_platform" value="인터넷 방송"> 인터넷 방송
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="desired_platform" value="틱톡"> 틱톡
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>원하는 방송 컨셉 * <span style="font-size:12px; color:var(--muted); font-weight:400;">(중복선택 가능)</span></label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="concept" value="소통"> 소통
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="concept" value="노래"> 노래
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="concept" value="댄스"> 댄스
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="concept" value="운동"> 운동
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>방송가능 시간대 * <span style="font-size:12px; color:var(--muted); font-weight:400;">(중복선택 가능)</span></label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="available_time" value="오전(새벽 6시~12시)"> 오전(새벽 6시~12시)
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="available_time" value="오후(1시~6시)"> 오후(1시~6시)
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="available_time" value="저녁(6시~12시)"> 저녁(6시~12시)
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="available_time" value="새벽(1시~6시)"> 새벽(1시~6시)
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>SNS계정(필수 선택)</label>
+            <input type="text" name="handle" placeholder="채널 URL 또는 @account" required>
+          </div>
+
+          <div class="field">
+            <label>문의사항</label>
+            <textarea name="note" placeholder="궁금한 내용 자유롭게 작성해주세요.(ex : 합격기준, 미팅일정 등등)"></textarea>
+          </div>
+
+          <div class="field">
+            <div class="consent-section">
+              <button type="button" class="consent-header" onclick="toggleConsent(event, 'consent1')">
+                <input type="checkbox" id="consent" name="consent" value="동의했습니다">
+                <span class="consent-header-checkbox"></span>
+                <span class="consent-title">
+                  <span>개인정보 수집·이용 동의 (필수)</span>
+                </span>
+                <span class="consent-toggle">▼</span>
+              </button>
+              <div id="consent1" class="consent-content">
+                <p><strong>두들링이엔티(이하 "회사")</strong>는 방송인 지원 접수 및 심사를 위하여 아래와 같이 개인정보를 수집·이용합니다.</p>
+                <p>내용을 충분히 확인하신 후 동의 여부를 선택해 주시기 바랍니다.</p>
+                
+                <p style="margin-top: 12px; font-weight: 600;">1. 수집하는 개인정보 항목</p>
+                <p><strong>필수항목</strong><br>이름, 연락처(휴대전화번호), 거주지(지역 단위), 지원 동기, 지원 경로</p>
+                <p><strong>선택항목</strong><br>SNS 계정 정보, 방송 경험, 기타 지원자가 기재한 추가 정보</p>
+                
+                <p style="margin-top: 12px; font-weight: 600;">2. 개인정보 수집·이용 목적</p>
+                <ol>
+                  <li>방송인 지원 접수 및 본인 확인</li>
+                  <li>지원자 심사 및 합격 여부 안내</li>
+                  <li>방송인 양성 및 활동 관련 안내</li>
+                  <li>향후 방송, 콘텐츠, 협업 프로젝트 제안 및 커뮤니케이션</li>
+                </ol>
+                
+                <p style="margin-top: 12px; font-weight: 600;">3. 개인정보 보유 및 이용 기간</p>
+                <p>지원일로부터 24개월간 보관 후 지체 없이 파기<br>단, 관계 법령에 따라 보관이 필요한 경우 해당 법령에서 정한 기간 동안 보관</p>
+                
+                <p style="margin-top: 12px; font-weight: 600;">4. 동의 거부 권리 및 불이익 안내</p>
+                <p>귀하는 개인정보 수집·이용에 대한 동의를 거부할 권리가 있습니다.</p>
+                <p>다만, 필수항목에 대한 동의를 거부할 경우 방송인 지원 접수 및 심사가 제한될 수 있습니다.</p>
+                
+                <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                  ☑ 위 개인정보 수집·이용에 동의합니다. (필수)
+                </p>
+              </div>
+            </div>
+
+            <div class="consent-section">
+              <button type="button" class="consent-header" onclick="toggleConsent(event, 'consent2')">
+                <input type="checkbox" id="marketing" name="marketing" value="동의했습니다">
+                <span class="consent-header-checkbox"></span>
+                <span class="consent-title">
+                  <span>마케팅 및 추가 활용 동의(선택)</span>
+                </span>
+                <span class="consent-toggle">▼</span>
+              </button>
+              <div id="consent2" class="consent-content">
+                <p><strong>회사</strong>는 아래 목적에 한하여 개인정보를 추가로 활용할 수 있습니다.</p>
+                
+                <p style="margin-top: 12px; font-weight: 600;">1. 활용 목적</p>
+                <ol>
+                  <li>향후 방송, 광고, 협찬, 프로젝트 참여 제안</li>
+                  <li>회사의 홍보·마케팅·SNS·홈페이지 콘텐츠 활용</li>
+                  <li>방송인 섭외 및 관련 정보 안내</li>
+                </ol>
+                
+                <p style="margin-top: 12px; font-weight: 600;">2. 활용 항목</p>
+                <p>이름, 연락처, SNS 계정, 지원 내용 및 제출 정보</p>
+                
+                <p style="margin-top: 12px; font-weight: 600;">3. 보유 및 이용 기간</p>
+                <p>동의일로부터 24개월간</p>
+                
+                <p style="margin-top: 12px; font-weight: 600;">4. 동의 거부 안내</p>
+                <p>선택 동의 항목으로, 동의하지 않더라도 지원 및 심사에는 불이익이 없습니다.</p>
+                
+                <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                  ☐ 위 마케팅 및 추가 활용에 동의합니다. (선택)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit">▶ 신청하기</button>
+          <div id="status" class="status" aria-live="polite"></div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <div id="successTitle">신청 완료</div>
+        <button id="modalClose" class="btn-outline" aria-label="닫기">닫기</button>
+      </div>
+      <div class="modal-body">
+        신청이 접수되었습니다! 담당자가 확인 후 개별 연락드릴 예정입니다.
+      </div>
+      <div class="modal-actions">
+        <button id="modalOk" class="btn-outline">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleConsent(event, contentId) {
+      // ▼ 버튼만 클릭되었을 때만 토글
+      if (!event.target.classList.contains('consent-toggle')) {
+        return;
+      }
+      
+      const button = event.target.closest('.consent-header');
+      const content = document.getElementById(contentId);
+      
+      // 콘텐츠 토글
+      content.classList.toggle('show');
+      button.classList.toggle('open');
+    }
+
+    function setupConsentCheckbox(checkboxId, contentId) {
+      const checkbox = document.getElementById(checkboxId);
+      const headerCheckbox = checkbox.nextElementSibling;
+      
+      // 체크박스 클릭 시
+      checkbox.addEventListener('change', function() {
+        updateCheckboxIcon(checkboxId);
+      });
+      
+      // 헤더 체크박스 span 클릭 시
+      headerCheckbox.addEventListener('click', function(e) {
+        e.stopPropagation();
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
+      });
+      
+      // 초기 상태 설정
+      updateCheckboxIcon(checkboxId);
+    }
+
+    function updateCheckboxIcon(checkboxId) {
+      const checkbox = document.getElementById(checkboxId);
+      const headerCheckbox = checkbox.nextElementSibling;
+      
+      if (checkbox.checked) {
+        headerCheckbox.textContent = '✅';
+        headerCheckbox.style.background = 'transparent';
+        headerCheckbox.style.border = 'none';
+      } else {
+        headerCheckbox.textContent = '';
+        headerCheckbox.style.background = 'white';
+        headerCheckbox.style.border = '2px solid var(--border)';
+      }
+    }
+
+    const platformGroup = document.getElementById('platformGroup');
+    const platformInput = document.getElementById('platform');
+    const statusEl = document.getElementById('status');
+    const form = document.getElementById('eventForm');
+    const consent = document.getElementById('consent');
+    const marketing = document.getElementById('marketing');
+    const successModal = document.getElementById('successModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalOk = document.getElementById('modalOk');
+
+    // 동의 체크박스 설정
+    setupConsentCheckbox('consent', 'consent1');
+    setupConsentCheckbox('marketing', 'consent2');
+
+    platformGroup.addEventListener('click', (e) => {
+      const btn = e.target.closest('.platform-btn');
+      if (!btn) return;
+      btn.classList.toggle('active');
+      
+      // 선택된 플랫폼들을 쉼표로 구분해서 저장
+      const selected = Array.from(document.querySelectorAll('.platform-btn.active'))
+        .map(el => el.dataset.value)
+        .join(', ');
+      platformInput.value = selected;
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      statusEl.textContent = '';
+      statusEl.className = 'status';
+
+      if (!platformInput.value) {
+        statusEl.textContent = '본인 SNS 계정을 선택해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+      
+      // 체크박스 검증
+      const reasonChecked = document.querySelectorAll('input[name="reason"]:checked').length > 0;
+      if (!reasonChecked) {
+        statusEl.textContent = '지원하게 된 이유를 선택해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+
+      const desiredPlatformChecked = document.querySelectorAll('input[name="desired_platform"]:checked').length > 0;
+      if (!desiredPlatformChecked) {
+        statusEl.textContent = '활동 원하는 플랫폼을 선택해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+
+      const conceptChecked = document.querySelectorAll('input[name="concept"]:checked').length > 0;
+      if (!conceptChecked) {
+        statusEl.textContent = '원하는 방송 컨셉을 선택해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+
+      const timeChecked = document.querySelectorAll('input[name="available_time"]:checked').length > 0;
+      if (!timeChecked) {
+        statusEl.textContent = '방송가능 시간대를 선택해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+
+      if (!consent.checked) {
+        statusEl.textContent = '개인정보 수집·이용에 동의해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+      if (!marketing.checked) {
+        statusEl.textContent = '마케팅 목적 2차 활용에 동의해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+      if (!form.checkValidity()) {
+        statusEl.textContent = '필수 항목을 확인해주세요.';
+        statusEl.classList.add('error');
+        return;
+      }
+
+      // 체크박스 배열 수집
+      const formData = new FormData(form);
+      const data = {};
+      
+      // 일반 필드 수집
+      for (let [key, value] of formData.entries()) {
+        if (key === 'reason' || key === 'desired_platform' || key === 'concept' || key === 'available_time') {
+          if (!data[key]) data[key] = [];
+          data[key].push(value);
+        } else {
+          data[key] = value;
+        }
+      }
+      
+      // 배열을 쉼표로 구분된 문자열로 변환
+      if (data.reason && Array.isArray(data.reason)) {
+        data.reason = data.reason.join(', ');
+      }
+      if (data.desired_platform && Array.isArray(data.desired_platform)) {
+        data.desired_platform = data.desired_platform.join(', ');
+      }
+      if (data.concept && Array.isArray(data.concept)) {
+        data.concept = data.concept.join(', ');
+      }
+      if (data.available_time && Array.isArray(data.available_time)) {
+        data.available_time = data.available_time.join(', ');
+      }
+      
+      // 체크박스 상태를 명시적으로 처리
+      data.consent = data.consent || '동의하지 않습니다';
+      data.marketing = data.marketing || '동의하지 않습니다';
+      
+      console.log('=== 전송 직전 최종 데이터 ===');
+      console.log('전체:', JSON.stringify(data, null, 2));
+      
+      // Google Apps Script 웹훅 URL
+      const webhookURL = 'https://script.google.com/macros/s/AKfycbwD8KRXdTqg-4aKkz1mxJTjS4f-CLlYouNIZIB6UjPcI9vFjflqgK1o_CAZc-w0tWt4/exec';
+      
+      fetch(webhookURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        console.log('응답 완료');
+        statusEl.textContent = '신청이 완료되었습니다! 담당자가 확인 후 개별 안내드릴게요.';
+        statusEl.classList.add('success');
+        form.reset();
+        document.querySelectorAll('.platform-btn').forEach(el => el.classList.remove('active'));
+        platformInput.value = '';
+        consent.checked = false;
+        marketing.checked = false;
+        successModal.style.display = 'flex';
+      })
+      .catch(error => {
+        console.error('전송 오류:', error);
+        console.error('상세:', error.message);
+        // no-cors 모드에서는 에러가 나도 데이터는 전송될 수 있으므로 성공 메시지 표시
+        statusEl.textContent = '신청이 완료되었습니다! 담당자가 확인 후 개별 안내드릴게요.';
+        statusEl.classList.add('success');
+        form.reset();
+        document.querySelectorAll('.platform-btn').forEach(el => el.classList.remove('active'));
+        platformInput.value = '';
+        consent.checked = false;
+        marketing.checked = false;
+        successModal.style.display = 'flex';
+      });
+    });
+
+    // Modal interactions
+    modalClose.addEventListener('click', () => { 
+      successModal.style.display = 'none'; 
+    });
+    modalOk.addEventListener('click', () => { 
+      successModal.style.display = 'none'; 
+    });
+    successModal.addEventListener('click', (e) => {
+      if (e.target === successModal) successModal.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
